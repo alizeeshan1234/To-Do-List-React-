@@ -1,0 +1,57 @@
+import React, { useState } from "react";
+import ReactDOM from "react-dom";
+import "./styles.css";
+
+function App() {
+  const [inputText, setInputText] = useState("");
+  const [items, setItems] = useState([]);
+
+  const onChangeHandler = (event) => {
+    const newValue = event.target.value;
+    setInputText(newValue);
+  };
+
+  const addItem = () => {
+    setItems((previousItems) => {
+      return [...previousItems, inputText];
+    });
+    setInputText("");
+  };
+
+  const lineThorugh = (event) => {
+    event.target.style.textDecoration = "line-through";
+  };
+
+  const removeAllTasks = () => {
+    setItems([]);
+  };
+
+  return (
+    <div>
+      <div id="container">
+        <input
+          type="text"
+          placeholder="Add Task..."
+          value={inputText}
+          onChange={onChangeHandler}
+        />
+        <button onClick={addItem}>Add</button>
+        <button onClick={removeAllTasks}>Clear Tasks</button>
+      </div>
+      <div>
+        <ul>
+          {items.map((todoItem) => (
+            <li onClick={lineThorugh}>{todoItem}</li>
+          ))}
+        </ul>
+      </div>
+    </div>
+  );
+}
+
+ReactDOM.render(
+  <div>
+    <App />
+  </div>,
+  document.getElementById("root")
+);
