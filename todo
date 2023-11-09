@@ -1,50 +1,45 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import ReactDOM from "react-dom";
-import "./styles.css";
 
 function App() {
-  const [inputText, setInputText] = useState("");
-  const [items, setItems] = useState([]);
+  const [inputValue, setInputValue] = useState();
+  const [storeValue, setStoreValue] = useState([]);
 
-  const onChangeHandler = (event) => {
-    const newValue = event.target.value;
-    setInputText(newValue);
+  const onClickHandler = () => {
+    const value = document.querySelector("input").value;
+    setStoreValue([...storeValue, value]);
+    setInputValue("");
   };
 
-  const addItem = () => {
-    setItems((previousItems) => {
-      return [...previousItems, inputText];
-    });
-    setInputText("");
-  };
+  useEffect(() => {
+    console.log(storeValue);
+  }, [storeValue]);
 
-  const lineThorugh = (event) => {
-    event.target.style.textDecoration = "line-through";
-  };
-
-  const removeAllTasks = () => {
-    setItems([]);
+  const DeleteTask = (index) => {
+    console.log("Clicked item index:", index);
+    const upDatedStoredValue = [...storeValue];
+    upDatedStoredValue.splice(index, 1);
+    setStoreValue(upDatedStoredValue);
   };
 
   return (
     <div>
-      <div id="container">
-        <input
-          type="text"
-          placeholder="Add Task..."
-          value={inputText}
-          onChange={onChangeHandler}
-        />
-        <button onClick={addItem}>Add</button>
-        <button onClick={removeAllTasks}>Clear Tasks</button>
-      </div>
-      <div>
-        <ul>
-          {items.map((todoItem) => (
-            <li onClick={lineThorugh}>{todoItem}</li>
-          ))}
-        </ul>
-      </div>
+      <input
+        type="text"
+        placeholder="Task :"
+        value={inputValue}
+        onChange={(e) => setInputValue(e.target.value)}
+      />
+      <button onClick={onClickHandler}>Add</button>
+      <ul>
+        {storeValue.map((element, index) => {
+          return (
+            <li key={index} onClick={() => DeleteTask(index)}>
+              {element}
+            </li>
+          );
+        })}
+      </ul>
     </div>
   );
 }
