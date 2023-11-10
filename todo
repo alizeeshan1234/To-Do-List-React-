@@ -7,8 +7,12 @@ function App() {
 
   const onClickHandler = () => {
     const value = document.querySelector("input").value;
-    setStoreValue([...storeValue, value]);
-    setInputValue("");
+    if (value !== "") {
+      setStoreValue([...storeValue, value]);
+      setInputValue("");
+    } else {
+      setStoreValue([...storeValue]);
+    }
   };
 
   useEffect(() => {
@@ -34,9 +38,12 @@ function App() {
       <ul>
         {storeValue.map((element, index) => {
           return (
-            <li key={index} onClick={() => DeleteTask(index)}>
-              {element}
-            </li>
+            <div>
+              <li key={index} onClick={() => DeleteTask(index)}>
+                {element}
+              </li>
+              <input type="checkbox" />
+            </div>
           );
         })}
       </ul>
